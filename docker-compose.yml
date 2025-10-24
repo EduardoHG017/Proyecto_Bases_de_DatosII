@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # NODO PRIMARIO - Acepta lecturas y escrituras
+  postgresql-primary:
+    image: postgres:15
+    container_name: postgresql-primary
+    hostname: postgresql-primary
+    environment:
+      POSTGRES_DB: proyecto_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      # Scripts de inicialización
+      - ./primary/init-primary.sh:/docker-entrypoint-initdb.d/init-primary.sh
+      # Datos persistentes
+      - postgresql-primary-data:/var/lib/postgresql/data
+      # Scripts de respaldo
+      - ./scripts:/scripts
+      - ./backups:/backups
+    networks:
+      - postgresql-network
+    restart: unless-stopped
+
+# Volúmenes para persistencia de datos
+volumes:
+  postgresql-primary-data:
+    driver: local
+  postgresql-standby-data:
+    driver: local
+  postgresql-readonly-data:
+    driver: local
+
+# Red para comunicación entre contenedores
+networks:
+  postgresql-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

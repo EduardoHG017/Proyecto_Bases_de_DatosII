@@ -1,0 +1,33 @@
+# Archivos de datos de PostgreSQL
+backups/wal_archive/*
+!backups/wal_archive/.gitkeep
+
+# Logs de Docker
+*.log
+
+# Archivos temporales
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
+.vscode/
+.idea/
+
+# Archivos de sistema Windows
+desktop.ini
+
+# Archivos temporales de PowerShell
+*.tmp
+*.temp
+
+# Datos de volúmenes (se regeneran automáticamente)
+data/
+pgdata/
+
+# Archivos de backup grandes (mantener estructura pero no archivos)
+backups/full/*.tar.gz
+backups/incremental/*.tar.gz
+
+# Variables de entorno (si las tienes)
+.env
+.env.local
